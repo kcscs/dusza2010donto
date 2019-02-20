@@ -36,9 +36,17 @@ namespace wiki
                 parancs = Console.ReadLine();
                 switch (parancs[0]) {
                     case 'S':
-                        woldal = new Weboldal(parancs.Substring(1));
+                        woldal = new Weboldal(parancs.Substring(4));//megnyitja a megadott weboldalt
                         break;
-
+                    case 'l':
+                        int n;
+                        string[] elemek = parancs.Split(' ');
+                        n = int.Parse(elemek[1])-1;
+                        woldal = new Weboldal(woldal.linkek[n]);//megnyitja a jelenlegi lap n. linkjét
+                        break;
+                    case 'D':
+                        DomGenerator.General(woldal);//generál egy Dom fát
+                        break;
                     
                 }
                 //Console.CursorTop--;
