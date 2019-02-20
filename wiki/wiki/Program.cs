@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace wiki
 {
@@ -12,17 +13,34 @@ namespace wiki
             Console.SetWindowSize(80, 22);
             string nev = "kkzs";
             string parancs;
+            Weboldal woldal;
+            if (File.Exists("index.txt")) {
+                woldal = new Weboldal("index.txt");
+            }
+            
             do
             {
                 Console.Clear();
                 Console.WriteLine(nev);
 
-                for (int i = 0; i < 20; i++)
-                {
-                    Console.WriteLine();
+                for (int i = 0; i < woldal.oldalak.Count; i++) {
+                    for (int j = 0; j < woldal.oldalak[i].oldalelemek.Count; j++) {
+                        Console.WriteLine(woldal.oldalak[i].oldalelemek[j].ToString());
+                    }
+                    Console.CursorTop = 20;
+                    Console.Write("Az oldal nem ért véget, nyomjon meg egy gombot a folytatáshoz.");
+                    Console.ReadKey();
                 }
 
+                
                 parancs = Console.ReadLine();
+                switch (parancs[0]) {
+                    case 'S':
+                        woldal = new Weboldal(parancs.Substring(1));
+                        break;
+
+                    
+                }
                 //Console.CursorTop--;
             } while (parancs != "q");
         }

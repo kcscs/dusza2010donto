@@ -9,5 +9,9 @@ namespace wiki
     public class Oldalelem
     {
         public string szoveg;
+
+        public override string ToString() {
+            return szoveg;
+        }
     }
 }
