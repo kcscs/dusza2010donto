@@ -12,7 +12,7 @@ namespace wiki
         public List<Oldal> oldalak;
         public List<string> linkek;
 
-        Weboldal(string fajl) {
+        public Weboldal(string fajl) {
             List<Oldalelem> oldalelemek = new List<Oldalelem>();
             using (StreamReader sr = new StreamReader(fajl)) {
                 while (!sr.EndOfStream) {
@@ -48,6 +48,53 @@ namespace wiki
                         oldalelemek[i].szoveg.Substring(index, oldalelemek[i].szoveg.Length - hossz);
                     }
                     oldalelemek.Add(oldalelem); */
+                    if(sor[0]=='*')
+                    {
+                        StringBuilder strB = new StringBuilder(sor);
+                        strB[0] = '-';
+                        while(sor.Contains("*"))
+                        {
+                                strB.Replace("*", "  ");
+                                sor = strB.ToString(); 
+                        }   
+                    }
+
+                    int kulso = 0;
+                    int belso = 0;
+                    int legbelsobb = 0;
+                    String s = "";
+
+                    if(sor[0]=='#')
+                    {
+                        kulso++;
+                        StringBuilder strB = new StringBuilder(sor);
+                        for(int i=0;i<sor.LastIndexOf('#');i++)
+                        {
+                            belso = 0;
+                            strB[i] = kulso.ToString()[0];
+                            if(sor.LastIndexOf('#')==1)
+                            {
+                                belso++;
+                                s = new StringBuilder().Append(strB[i]).Append(".").Append(belso).Append(".").ToString();
+                                legbelsobb = 0;
+                            }
+
+                            if (sor.LastIndexOf('#') == 2)
+                            {
+                                legbelsobb++;
+                                s = new StringBuilder().Append(strB[i]).Append(".").Append(belso).Append(".").Append(legbelsobb).Append(".").ToString();
+                            }
+
+                        }
+
+                        sor.Remove(0, sor.LastIndexOf('#'));
+                        sor = s + strB.ToString();
+                        
+                    }
+
+
+                    
+
 
                     while (true) {
                         indexkep = sor.IndexOf("[img");
