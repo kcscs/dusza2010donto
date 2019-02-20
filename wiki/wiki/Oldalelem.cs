@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace wiki
 {
-    class Oldalelem
+    public class Oldalelem
     {
-        string szoveg;
-        string kep;
+        public string szoveg;
+        public string kep;
     }
 }

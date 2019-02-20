@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace wiki
 {
     class Oldal
     {
         List<Oldalelem> oldalelemek = new List<Oldalelem>();
+
+        public void Beolvas()
+        {
+           
+        }
     }
 }
