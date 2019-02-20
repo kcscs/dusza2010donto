@@ -9,13 +9,58 @@ namespace wiki
 {
     class Weboldal
     {
-        public List<Oldal> oldalak;
-        public List<string> linkek;
+        public List<Oldal> oldalak = new List<Oldal>();
+        public List<string> linkek = new List<string>();
         public string fajlnev;
+        public DOM dom;
 
         public Weboldal(string fajl) {
-            List<Oldalelem> oldalelemek = new List<Oldalelem>(); 
-            using (StreamReader sr = new StreamReader(fajl)) {  //Fájlok beolvasása
+            fajlnev = fajl;
+            dom = new DOM(fajl);
+            List<Oldalelem> oldalelemek = new List<Oldalelem>();
+
+            StringBuilder sb = new StringBuilder();
+            string tabPrefix = "";
+            foreach (DOM.Node n in dom.nodes) {
+                Oldalelem o;
+                switch (n.type) {
+                    case DOM.NodeType.TEXT:
+                        sb.Append(n.szov);
+                        break;
+                    case DOM.NodeType.REF:
+                        int veg = n.szov.LastIndexOf(" [");
+                        linkek.Add(n.szov.Substring(veg + 2, n.szov.Length - veg - 3));
+                        sb.Append(n.szov.Substring(0, veg) + "[L"+linkek.Count+"]");
+                        break;
+                    case DOM.NodeType.NL:
+                        o = new Oldalelem();
+                        sb.Insert(0, tabPrefix);
+                        o.szoveg = sb.ToString();
+                        sb.Clear();
+                        oldalelemek.Add(o);
+                        tabPrefix = "";
+                        break;
+                    case DOM.NodeType.NUM:
+                        tabPrefix = n.szov;
+                        break;
+                    case DOM.NodeType.LIST:
+                        tabPrefix = n.szov;
+                        break;
+                    case DOM.NodeType.IMG:
+                        o = new Oldalelem();
+                        sb.Insert(0, tabPrefix);
+                        o.szoveg = sb.ToString();
+                        sb.Clear();
+                        oldalelemek.Add(o);
+                        tabPrefix = "";
+                        oldalelemek.Add(new Abra(n.szov.Substring(0, n.szov.Length)));
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            /*using (StreamReader sr = new StreamReader(fajl)) {  //Fájlok beolvasása
 
                 fajlnev = fajl;
                 while (!sr.EndOfStream) {
@@ -51,48 +96,54 @@ namespace wiki
                         oldalelemek[i].szoveg.Substring(index, oldalelemek[i].szoveg.Length - hossz);
                     }
                     oldalelemek.Add(oldalelem); */
-                    if(sor[0]=='*')    // Ha a sor csillaggal kezdődik
-                    {
-                        StringBuilder strB = new StringBuilder(sor); 
-                        strB[0] = '-'; // Az első elem legyen -
-                        while(sor.Contains("*")) // Ameddig van benne *, addig cserélje őket 2 szóközre
+                    /*if (sor.Length > 0) {
+                        if (sor[0] == '*')    // Ha a sor csillaggal kezdődik
                         {
+                            StringBuilder strB = new StringBuilder(sor);
+                            strB[0] = '-'; // Az első elem legyen -
+                            while (sor.Contains("*")) // Ameddig van benne *, addig cserélje őket 2 szóközre
+                            {
                                 strB.Replace("*", "  ");
-                                sor = strB.ToString(); 
-                        }   
-                    }
-
-                    int kulso = 0;
-                    int belso = 0;
-                    int legbelsobb = 0;
-                    String s = "";
-
-                    if(sor[0]=='#') // Ha a sor #-el kezdődik
-                    {
-                        kulso++;
-                        StringBuilder strB = new StringBuilder(sor); 
-                        for(int i=0;i<sor.LastIndexOf('#');i++)  // # Számaszor fusson le
-                        {
-                            belso = 0;
-                            strB[i] = kulso.ToString()[0];
-                            if(sor.LastIndexOf('#')==1) // Belső index 
-                            {
-                                belso++;
-                                s = new StringBuilder().Append(strB[i]).Append(".").Append(belso).Append(".").ToString();
-                                legbelsobb = 0;
+                                sor = strB.ToString();
                             }
-
-                            if (sor.LastIndexOf('#') == 2) // Legbelsőbb index 
-                            {
-                                legbelsobb++;
-                                s = new StringBuilder().Append(strB[i]).Append(".").Append(belso).Append(".").Append(legbelsobb).Append(".").ToString();
-                            }
-
                         }
 
-                        sor.Remove(0, sor.LastIndexOf('#')); // Sorok átalakítása
-                        sor = s + strB.ToString();
-                        
+                        int kulso = 0;
+                        int belso = 0;
+                        int legbelsobb = 0;
+                        String s = "";
+
+                        if (sor[0] == '#') // Ha a sor #-el kezdődik
+                        {
+                            kulso++;
+                            StringBuilder strB = new StringBuilder(sor);
+                            for (int i = 0; i < sor.LastIndexOf('#'); i++)  // # Számaszor fusson le
+                            {
+                                belso = 0;
+                                strB[i] = kulso.ToString()[0];
+                                if (sor.LastIndexOf('#') == 1) // Belső index 
+                                {
+                                    belso++;
+                                    s = new StringBuilder().Append(strB[i]).Append(".").Append(belso).Append(".").ToString();
+                                    legbelsobb = 0;
+                                }
+
+                                if (sor.LastIndexOf('#') == 2) // Legbelsőbb index 
+                                {
+                                    legbelsobb++;
+                                    s = new StringBuilder().Append(strB[i]).Append(".").Append(belso).Append(".").Append(legbelsobb).Append(".").ToString();
+                                }
+
+                            }
+
+                            sor.Remove(0, sor.LastIndexOf('#')); // Sorok átalakítása
+                            sor = s + strB.ToString();
+
+                        }
+                    } else {
+                        Oldalelem o = new Oldalelem();
+                        o.szoveg = "";
+                        oldalelemek.Add(o);
                     }
 
 
@@ -158,7 +209,7 @@ namespace wiki
                         oldalelemek.Add(o);
                     }
                 }
-            }
+            }*/
 
             Oldal old = new Oldal();
             old.oldalelemek = oldalelemek;
