@@ -45,7 +45,7 @@ namespace wiki
                         woldal = new Weboldal(woldal.linkek[n]);//megnyitja a jelenlegi lap n. linkjét
                         break;
                     case 'D':
-                        DomGenerator.General(woldal);//generál egy Dom fát
+                        DomGenerator.General(woldal.fajlnev);//generál egy Dom fát
                         break;
                     
                 }
