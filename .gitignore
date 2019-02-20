@@ -1,6 +1,6 @@
-wiki/wiki.sln
-wiki/.vs/**
-wiki/wiki/**
-!wiki/wiki/*.cs
+#wiki/wiki.sln
+#wiki/.vs/**
+#wiki/wiki/**
+#!wiki/wiki/*.cs
 /*.bat
 /*.txt
