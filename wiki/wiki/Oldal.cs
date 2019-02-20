@@ -9,7 +9,7 @@ namespace wiki
 {
     class Oldal
     {
-        List<Oldalelem> oldalelemek = new List<Oldalelem>();
+        public List<Oldalelem> oldalelemek = new List<Oldalelem>();
 
         public void Beolvas()
         {

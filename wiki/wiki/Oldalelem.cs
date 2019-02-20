@@ -9,6 +9,5 @@ namespace wiki
     public class Oldalelem
     {
         public string szoveg;
-        public string kep;
     }
 }
