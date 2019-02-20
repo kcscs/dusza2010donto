@@ -11,10 +11,13 @@ namespace wiki
     {
         public List<Oldal> oldalak;
         public List<string> linkek;
+        public string fajlnev;
 
         public Weboldal(string fajl) {
-            List<Oldalelem> oldalelemek = new List<Oldalelem>();
-            using (StreamReader sr = new StreamReader(fajl)) {
+            List<Oldalelem> oldalelemek = new List<Oldalelem>(); 
+            using (StreamReader sr = new StreamReader(fajl)) {  //Fájlok beolvasása
+
+                fajlnev = fajl;
                 while (!sr.EndOfStream) {
                     string sor = sr.ReadLine();
                     Oldalelem oldalelem = new Oldalelem();
@@ -48,11 +51,11 @@ namespace wiki
                         oldalelemek[i].szoveg.Substring(index, oldalelemek[i].szoveg.Length - hossz);
                     }
                     oldalelemek.Add(oldalelem); */
-                    if(sor[0]=='*')
+                    if(sor[0]=='*')    // Ha a sor csillaggal kezdődik
                     {
-                        StringBuilder strB = new StringBuilder(sor);
-                        strB[0] = '-';
-                        while(sor.Contains("*"))
+                        StringBuilder strB = new StringBuilder(sor); 
+                        strB[0] = '-'; // Az első elem legyen -
+                        while(sor.Contains("*")) // Ameddig van benne *, addig cserélje őket 2 szóközre
                         {
                                 strB.Replace("*", "  ");
                                 sor = strB.ToString(); 
@@ -64,22 +67,22 @@ namespace wiki
                     int legbelsobb = 0;
                     String s = "";
 
-                    if(sor[0]=='#')
+                    if(sor[0]=='#') // Ha a sor #-el kezdődik
                     {
                         kulso++;
-                        StringBuilder strB = new StringBuilder(sor);
-                        for(int i=0;i<sor.LastIndexOf('#');i++)
+                        StringBuilder strB = new StringBuilder(sor); 
+                        for(int i=0;i<sor.LastIndexOf('#');i++)  // # Számaszor fusson le
                         {
                             belso = 0;
                             strB[i] = kulso.ToString()[0];
-                            if(sor.LastIndexOf('#')==1)
+                            if(sor.LastIndexOf('#')==1) // Belső index 
                             {
                                 belso++;
                                 s = new StringBuilder().Append(strB[i]).Append(".").Append(belso).Append(".").ToString();
                                 legbelsobb = 0;
                             }
 
-                            if (sor.LastIndexOf('#') == 2)
+                            if (sor.LastIndexOf('#') == 2) // Legbelsőbb index 
                             {
                                 legbelsobb++;
                                 s = new StringBuilder().Append(strB[i]).Append(".").Append(belso).Append(".").Append(legbelsobb).Append(".").ToString();
@@ -87,7 +90,7 @@ namespace wiki
 
                         }
 
-                        sor.Remove(0, sor.LastIndexOf('#'));
+                        sor.Remove(0, sor.LastIndexOf('#')); // Sorok átalakítása
                         sor = s + strB.ToString();
                         
                     }
