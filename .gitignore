@@ -1,3 +1,4 @@
+*.lock
 #wiki/wiki.sln
 #wiki/.vs/**
 #wiki/wiki/**
