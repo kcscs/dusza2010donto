@@ -13,7 +13,7 @@ namespace wiki
             Console.SetWindowSize(80, 22);
             string nev = "kkzs";
             string parancs;
-            Weboldal woldal;
+            Weboldal woldal=null;
             if (File.Exists("index.txt")) {
                 woldal = new Weboldal("index.txt");
             }
@@ -23,14 +23,18 @@ namespace wiki
                 Console.Clear();
                 Console.WriteLine(nev);
 
-                for (int i = 0; i < woldal.oldalak.Count; i++) {
-                    for (int j = 0; j < woldal.oldalak[i].oldalelemek.Count; j++) {
-                        Console.WriteLine(woldal.oldalak[i].oldalelemek[j].ToString());
+                
+                for (int i = 0; i < woldal.oldalak.Count; i++)
+                {
+                    for (int j = 0; j < woldal.oldalak[i].oldalelemek.Count; j++)
+                    {
+                        Console.WriteLine(woldal.oldalak[i].oldalelemek[j].ToString());//kiírja egymás után az oldalakat 
                     }
                     Console.CursorTop = 20;
                     Console.Write("Az oldal nem ért véget, nyomjon meg egy gombot a folytatáshoz.");
                     Console.ReadKey();
                 }
+                
 
                 
                 parancs = Console.ReadLine();
